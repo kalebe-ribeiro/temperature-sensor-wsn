@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <DHT.h>
+#include "sensor.h"
 
 #define DHTPIN 4
 #define DHTTYPE DHT22
@@ -13,12 +14,15 @@ void setup() {
 
 void loop() {
   float humidity = dht.readHumidity();
-  float temperature = readTemperature();
+  float temperature = dht.readTemperature();
 
   if (isnan(humidity) || isnan(temperature)){
     Serial.println("Failed to read from DHT sensor. ");
     return;
-
   }
+  
+  sensor_alert(humidity, temperature);
+
+  delay(2000);
 }
 
