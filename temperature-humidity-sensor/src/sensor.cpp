@@ -14,3 +14,11 @@ AlertValues sensor_alert(float humidity, float temperature) {
     }
     return alertValues;
 }
+
+SensorData read_sensor() {
+    SensorData sensorData;
+    sensorData.humidity = dht.readHumidity();
+    sensorData.temperature = dht.readTemperature();
+
+    return sensorData;
+}

@@ -7,31 +7,37 @@
 
 DHT dht(DHTPIN, DHTTYPE);
 
+SensorData sensorData;
+unsigned long lastReadTime = millis();
+
 void setup() {
   dht.begin();
   Serial.begin(9600);
+  
 }
 
 void loop() {
-  SensorData sensorData;
-  sensorData.humidity = dht.readHumidity();
-  sensorData.temperature = dht.readTemperature();
+
+  if (millis() - lastReadTime >= 2000) {
+    sensorData = read_sensor();
+    lastReadTime = millis();
+  }
 
   if (isnan(sensorData.humidity) || isnan(sensorData.temperature)){
     Serial.printf("Failed to read from DHT sensor. \n");
     return;
   }
   
-  AlertValues AlertValues = sensor_alert(sensorData.humidity, sensorData.temperature);
+  AlertValues alertValues = sensor_alert(sensorData.humidity, sensorData.temperature);
 
-  if (AlertValues.alert_humidity){
+  if (alertValues.alert_humidity){
     Serial.printf("Alert: Humidity is above the threshold! %.2f%%\n", sensorData.humidity);
   }
-  if (AlertValues.alert_temperature){
+
+  if (alertValues.alert_temperature){
     Serial.printf("Alert: Temperature is above the threshold! %.2f°C\n", sensorData.temperature);
   }
 
 
-  delay(2000);
 }
 

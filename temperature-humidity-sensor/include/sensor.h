@@ -14,5 +14,6 @@ typedef struct {
 } SensorData;
 
 AlertValues sensor_alert(float humidity, float temperature);
+SensorData read_sensor();
 
 
