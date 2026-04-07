@@ -22,8 +22,15 @@ void loop() {
     return;
   }
   
-  sensor_alert(sensorData.humidity, sensorData.temperature);
-  
+  AlertValues AlertValues = sensor_alert(sensorData.humidity, sensorData.temperature);
+
+  if (AlertValues.alert_humidity){
+    Serial.printf("Alert: Humidity is above the threshold! %.2f%%\n", sensorData.humidity);
+  }
+  if (AlertValues.alert_temperature){
+    Serial.printf("Alert: Temperature is above the threshold! %.2f°C\n", sensorData.temperature);
+  }
+
 
   delay(2000);
 }

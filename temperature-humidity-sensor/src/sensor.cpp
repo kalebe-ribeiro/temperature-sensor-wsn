@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "sensor.h"
 
-bool sensor_alert(float humidity, float temperature) {
+AlertValues sensor_alert(float humidity, float temperature) {
     AlertValues alertValues;
     alertValues.alert_humidity = false;
     alertValues.alert_temperature = false;

@@ -3,13 +3,16 @@
 #define THRESHOLD_HUMIDITY 60.0
 #define THRESHOLD_TEMPERATURE 30.0
 
-bool sensor_alert(float humidity, float temperature);
+typedef struct {
+    bool alert_humidity;
+    bool alert_temperature;
+} AlertValues;
+
 typedef struct {
     float humidity;
     float temperature;
 } SensorData;
 
-typedef struct {
-    bool alert_humidity;
-    bool alert_temperature;
-} AlertValues;
+AlertValues sensor_alert(float humidity, float temperature);
+
+
