@@ -23,6 +23,7 @@ void loop() {
   }
   
   sensor_alert(sensorData.humidity, sensorData.temperature);
+  
 
   delay(2000);
 }
