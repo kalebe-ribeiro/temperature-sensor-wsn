@@ -1,34 +1,39 @@
 #include <Arduino.h>
 #include <DHT.h>
 #include "sensor.h"
+#include "buffer.h"
 
 #define DHTPIN 4
 #define DHTTYPE DHT22
 
 DHT dht(DHTPIN, DHTTYPE);
 
-SensorData sensorData;
-unsigned long lastReadTime = millis();
-
 void setup() {
   dht.begin();
-  Serial.begin(9600);
+  Serial.begin(115200);
   
 }
 
 void loop() {
+  static SensorBuffer sensorBuffer = {0};
+  static SensorData sensorData;
+  static unsigned long lastReadTime = millis();
 
   if (millis() - lastReadTime >= 2000) {
     sensorData = read_sensor();
     lastReadTime = millis();
+    buffer_push(&sensorBuffer, sensorData);
   }
 
   if (isnan(sensorData.humidity) || isnan(sensorData.temperature)){
     Serial.printf("Failed to read from DHT sensor. \n");
     return;
   }
-  
-  AlertValues alertValues = sensor_alert(sensorData.humidity, sensorData.temperature);
+
+  float avg_temp = buffer_avg_temp(&sensorBuffer);
+  float avg_hum = buffer_avg_hum(&sensorBuffer);
+
+  AlertValues alertValues = sensor_alert(avg_hum, avg_temp);
 
   if (alertValues.alert_humidity){
     Serial.printf("Alert: Humidity is above the threshold! %.2f%%\n", sensorData.humidity);
