@@ -33,6 +33,8 @@ void loop() {
   float avg_temp = buffer_avg_temp(&sensorBuffer);
   float avg_hum = buffer_avg_hum(&sensorBuffer);
 
+  Serial.printf("Humidity: %.2f%% | Temperature: %.2f°C", avg_hum, avg_temp);
+
   AlertValues alertValues = sensor_alert(avg_hum, avg_temp);
 
   if (alertValues.alert_humidity){
