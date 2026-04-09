@@ -9,8 +9,6 @@ const int OneWireBus = 4;
 OneWire oneWire(OneWireBus);
 DallasTemperature sensors(&oneWire);
 
-sensors.requestTemperatures();
-
 void setup() {
   sensors.begin();
   Serial.begin(115200);
@@ -39,7 +37,7 @@ void loop() {
   if (sensorData.temperature == 85){
     Serial.printf("Error: Temperature reading is invalid");
   }
-  }
+  
 
   float avg_temp = buffer_avg_temp(&sensorBuffer);
 
