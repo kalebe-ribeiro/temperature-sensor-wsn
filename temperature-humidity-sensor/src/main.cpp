@@ -19,8 +19,6 @@ void loop() {
   static SensorData sensorData;
   static unsigned long lastReadTime = millis();
 
-  
-
   if (millis() - lastReadTime >= 2000) {
     sensors.requestTemperatures();
     sensorData = read_sensor();
@@ -28,12 +26,11 @@ void loop() {
     lastReadTime = millis();
   }
 
-  // VERIFICAR ERRO DE LEITURA DO SENSOR
   if (sensorData.temperature == DEVICE_DISCONNECTED_C) {
     Serial.printf("Error: Could not read temperature data");
     return;
   }
-
+  
   if (sensorData.temperature == 85){
     Serial.printf("Error: Temperature reading is invalid");
     return;
