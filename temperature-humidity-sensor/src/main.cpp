@@ -27,7 +27,7 @@ void loop() {
   }
 
   if (sensorData.temperature == DEVICE_DISCONNECTED_C) {
-    Serial.printf("Error: Could not read temperature data");
+    Serial.printf("Error: Could not connect to temperature sensor");
     return;
   }
   
@@ -35,7 +35,6 @@ void loop() {
     Serial.printf("Error: Temperature reading is invalid");
     return;
   }
-  
 
   float avg_temp = buffer_avg_temp(&sensorBuffer);
 
