@@ -36,6 +36,7 @@ void loop() {
 
   if (sensorData.temperature == 85){
     Serial.printf("Error: Temperature reading is invalid");
+    return;
   }
   
 
