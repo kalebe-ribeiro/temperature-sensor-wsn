@@ -1,17 +1,19 @@
 #include <Arduino.h>
-#include <DHT.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
 #include "sensor.h"
 #include "buffer.h"
 
-#define DHTPIN 4
-#define DHTTYPE DHT22
+const int OneWireBus = 4;
+OneWire oneWire(OneWireBus);
+DallasTemperature sensors(&oneWire);
 
-DHT dht(DHTPIN, DHTTYPE);
+sensors.requestTemperatures();
 
 void setup() {
-  dht.begin();
+  sensors.begin();
   Serial.begin(115200);
-  
 }
 
 void loop() {
@@ -19,32 +21,34 @@ void loop() {
   static SensorData sensorData;
   static unsigned long lastReadTime = millis();
 
+  
+
   if (millis() - lastReadTime >= 2000) {
+    sensors.requestTemperatures();
     sensorData = read_sensor();
-    lastReadTime = millis();
     buffer_push(&sensorBuffer, sensorData);
+    lastReadTime = millis();
   }
 
-  if (isnan(sensorData.humidity) || isnan(sensorData.temperature)){
-    Serial.printf("Failed to read from DHT sensor. \n");
+  // VERIFICAR ERRO DE LEITURA DO SENSOR
+  if (sensorData.temperature == DEVICE_DISCONNECTED_C) {
+    Serial.printf("Error: Could not read temperature data");
     return;
   }
 
-  float avg_temp = buffer_avg_temp(&sensorBuffer);
-  float avg_hum = buffer_avg_hum(&sensorBuffer);
-
-  Serial.printf("Humidity: %.2f%% | Temperature: %.2f°C", avg_hum, avg_temp);
-
-  AlertValues alertValues = sensor_alert(avg_hum, avg_temp);
-
-  if (alertValues.alert_humidity){
-    Serial.printf("Alert: Humidity is above the threshold! %.2f%%\n", sensorData.humidity);
+  if (sensorData.temperature == 85){
+    Serial.printf("Error: Temperature reading is invalid");
   }
+  }
+
+  float avg_temp = buffer_avg_temp(&sensorBuffer);
+
+  Serial.printf("Temperature: %.2f°C",avg_temp);
+
+  AlertValues alertValues = sensor_alert(avg_temp);
 
   if (alertValues.alert_temperature){
     Serial.printf("Alert: Temperature is above the threshold! %.2f°C\n", sensorData.temperature);
   }
-
-
 }
 

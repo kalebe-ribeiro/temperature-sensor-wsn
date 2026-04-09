@@ -25,20 +25,3 @@ float buffer_avg_temp(const SensorBuffer *buffer){
     return temp_avg;
 
 }
-
-float buffer_avg_hum(const SensorBuffer *buffer){ 
-    float hum_sum = 0.0;
-    float hum_avg = 0.0;
-
-    if (buffer->count == 0) {
-        return 0.0; // Avoid division by zero
-    }
-    
-    for (int i = 0; i < buffer->count; i++){
-        hum_sum += buffer->readings[i].humidity;
-    }
-
-    hum_avg = hum_sum / buffer->count;
-    return hum_avg;
-
-}

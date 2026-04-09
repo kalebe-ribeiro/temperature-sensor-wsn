@@ -12,4 +12,3 @@ typedef struct{
 
 void buffer_push(SensorBuffer* buffer, SensorData reading);
 float buffer_avg_temp(const SensorBuffer *buffer);
-float buffer_avg_hum(const SensorBuffer *buffer);
