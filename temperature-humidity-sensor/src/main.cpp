@@ -27,23 +27,25 @@ void loop() {
   }
 
   if (sensorData.temperature == DEVICE_DISCONNECTED_C) {
-    Serial.printf("Error: Could not connect to temperature sensor");
+    Serial.println("Error: Could not connect to temperature sensor");
     return;
   }
   
   if (sensorData.temperature == 85){
-    Serial.printf("Error: Temperature reading is invalid");
+    Serial.println("Error: Temperature reading is invalid");
     return;
   }
 
   float avg_temp = buffer_avg_temp(&sensorBuffer);
 
-  Serial.printf("Temperature: %.2f°C",avg_temp);
+  Serial.println("Temperature:");
+  Serial.println(avg_temp);
+  Serial.println("°C");
 
   AlertValues alertValues = sensor_alert(avg_temp);
 
   if (alertValues.alert_temperature){
-    Serial.printf("Alert: Temperature is above the threshold! %.2f°C\n", sensorData.temperature);
+    Serial.println("Alert: Temperature is above the threshold!");
   }
 }
 
