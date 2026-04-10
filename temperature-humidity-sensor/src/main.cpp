@@ -38,8 +38,8 @@ void loop() {
 
   float avg_temp = buffer_avg_temp(&sensorBuffer);
 
-  Serial.println("Temperature:");
-  Serial.println(avg_temp);
+  Serial.print("Temperature:");
+  Serial.print(avg_temp);
   Serial.println("°C");
 
   AlertValues alertValues = sensor_alert(avg_temp);
