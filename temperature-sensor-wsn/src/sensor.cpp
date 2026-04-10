@@ -1,5 +1,9 @@
 #include <Arduino.h>
 #include "sensor.h"
+#include <DallasTemperature.h>
+#include <OneWire.h>
+
+extern DallasTemperature sensors;
 
 AlertValues sensor_alert(float temperature) {
     AlertValues alertValues;

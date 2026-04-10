@@ -1,5 +1,5 @@
 #pragma once
-
+#include "sensor.h"
 #define BUFFER_SIZE 5
 
 
